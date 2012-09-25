@@ -32,6 +32,8 @@ object Main extends Application {
 
   assert(map2(Leaf(1), (_: Int) * 2) == Leaf(2))
   assert(map2(Branch(Leaf(1), Branch(Leaf(2), Leaf(3))), (_: Int) * 2) == Branch(Leaf(2), Branch(Leaf(4), Leaf(6))))
+
+  assert(id(Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))) == Branch(Leaf(1), Branch(Leaf(2), Leaf(3))))
 }
 
 sealed trait Tree[+A]
@@ -82,4 +84,6 @@ object TreeExercises {
   def map2[A, B](tree: Tree[A], f: A => B) =
     fold[A, Tree[B]](f andThen Leaf.apply, Branch.apply)(tree)
 
+  def id[A](tree: Tree[A]): Tree[A] =
+    fold[A, Tree[A]](Leaf.apply, Branch.apply)(tree)
 }
